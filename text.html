@@ -19,9 +19,35 @@
         value="This content will always face you."
         look-at="[gps-camera]"
         scale="120 120 120"
-        gps-entity-place="latitude: 33.89008; longitude: 130.70859;"
+        gps-entity-place="latitude: 33.890250; longitude: 130.708209;"
       ></a-text>
       <a-camera gps-camera rotation-reader> </a-camera>
     </a-scene>
+
+    <div id="locationInfo" style="position: absolute; top: 10px; left: 10px; color: white; font-size: 18px;">
+      Current Location: <span id="currentLat"></span>, <span id="currentLng"></span><br>
+      Target Location: 33.89008, 130.70859
+    </div>
+
+    <script>
+      function updateLocation() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(function(position) {
+            document.getElementById('currentLat').textContent = position.coords.latitude.toFixed(6);
+            document.getElementById('currentLng').textContent = position.coords.longitude.toFixed(6);
+          }, function(error) {
+            console.error("Error getting location: ", error);
+          });
+        } else {
+          console.error("Geolocation is not supported by this browser.");
+        }
+      }
+
+      // Update location every 5 seconds
+      setInterval(updateLocation, 5000);
+
+      // Initial location update
+      updateLocation();
+    </script>
   </body>
 </html>
